@@ -147,6 +147,7 @@ contract MyUSDEngine is Ownable {
 
     // Checkpoint 5: Accruing Interest & Managing Borrow Rates
     function setBorrowRate(uint256 newRate) external onlyRateController {
+        if (newRate < i_staking.savingsRate()) revert Engine__InvalidBorrowRate();
         _accrueInterest();
         borrowRate = newRate;
         emit BorrowRateUpdated(newRate);
